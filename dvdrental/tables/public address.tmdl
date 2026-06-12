@@ -1,0 +1,86 @@
+table 'public address'
+	lineageTag: d2b26691-a934-4817-9d2e-573c4c7ed866
+
+	column address_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a03397fb-fa53-4837-992e-54f7f200a1e7
+		summarizeBy: none
+		sourceColumn: address_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column address
+		dataType: string
+		lineageTag: 266448ca-3e07-4b0e-a265-50751331e745
+		summarizeBy: none
+		sourceColumn: address
+
+		annotation SummarizationSetBy = Automatic
+
+	column address2
+		dataType: string
+		lineageTag: dd9b8914-7174-4ce8-ba6a-b891c73534bf
+		summarizeBy: none
+		sourceColumn: address2
+
+		annotation SummarizationSetBy = Automatic
+
+	column district
+		dataType: string
+		lineageTag: d797e3b3-a622-4fd7-8d5d-3a72285bd296
+		summarizeBy: none
+		sourceColumn: district
+
+		annotation SummarizationSetBy = Automatic
+
+	column city_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f43ed81d-cea2-4684-bd29-0a5b522f18e6
+		summarizeBy: none
+		sourceColumn: city_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_code
+		dataType: string
+		lineageTag: 54d7f09f-e0c1-4bb6-bee6-3268919fda92
+		summarizeBy: none
+		sourceColumn: postal_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone
+		dataType: string
+		lineageTag: a9fc835a-b8da-4842-9ebe-913133377ddc
+		summarizeBy: none
+		sourceColumn: phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f3b677b4-45d6-4da5-a6ff-e05913d66101
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: 314f21fd-3bfa-45d5-98fc-0a6003f1beda
+			defaultHierarchy: LocalDateTable_8b20eb54-1b41-4548-9be0-7aa5441e0487.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public address' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_address = Source{[Schema="public",Item="address"]}[Data]
+				in
+				    public_address
+
+	annotation PBI_ResultType = Table
+

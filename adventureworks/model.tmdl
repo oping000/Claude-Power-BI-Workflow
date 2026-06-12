@@ -1,0 +1,44 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup 'Transform File from Sales Data'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from Sales Data\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+/// Errors in queries that were loaded on 6/12/2026 12:23:41 PM.
+queryGroup 'Query Errors - 6/12/2026 12:23:41 PM'
+
+	annotation PBI_QueryGroupOrder = 2
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Sales Data","Sample File","Parameter1","Transform Sample File","Transform File","AdventureWorks Calendar Lookup","AdventureWorks Customer Lookup","AdventureWorks Product Categories Lookup","AdventureWorks Product Lookup","AdventureWorks Product Subcategories Lookup","AdventureWorks Returns Data","AdventureWorks Territory Lookup","Errors in AdventureWorks Customer Lookup"]
+
+annotation PBI_ProTooling = ["MCP-PBIModeling"]
+
+ref table 'Sales Data'
+ref table DateTableTemplate_d7895d3c-ae0b-4fb1-997f-67ce773255fb
+ref table LocalDateTable_6c37bb95-382a-4bcf-a722-8d8b9eb55bea
+ref table LocalDateTable_61539fad-3acc-42b2-b372-cb9ddce77428
+ref table 'AdventureWorks Calendar Lookup'
+ref table LocalDateTable_b8f79e1d-ce22-4523-9c6b-aefa7294daf3
+ref table 'AdventureWorks Customer Lookup'
+ref table 'AdventureWorks Product Categories Lookup'
+ref table 'AdventureWorks Product Lookup'
+ref table 'AdventureWorks Product Subcategories Lookup'
+ref table 'AdventureWorks Returns Data'
+ref table LocalDateTable_1f1b4f2e-1d33-49e5-a0c7-a7b4f7c12731
+ref table 'AdventureWorks Territory Lookup'
+ref table LocalDateTable_73310873-4e6a-4c34-8179-577e6a7ed9b6
+
+ref cultureInfo en-US
+

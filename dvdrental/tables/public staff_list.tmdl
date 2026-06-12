@@ -1,0 +1,80 @@
+table 'public staff_list'
+	lineageTag: 4a9d4915-cf98-4470-b956-650524515c87
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a2d59f7-9f29-42a1-b114-7f5ed5b62601
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 9b797864-346f-49e8-8d04-dd00a4236a09
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column address
+		dataType: string
+		lineageTag: b05a1753-1f91-49ff-91ca-68e4a7aa7ef5
+		summarizeBy: none
+		sourceColumn: address
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'zip code'
+		dataType: string
+		lineageTag: 1083f5dc-d4a1-48a0-93cb-1253b00228c1
+		summarizeBy: none
+		sourceColumn: zip code
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone
+		dataType: string
+		lineageTag: 8df4296f-c631-40ba-b3f0-89550d8f5fbf
+		summarizeBy: none
+		sourceColumn: phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 244896a3-f000-40b8-ae78-67c4de0e2678
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 396132e7-b229-46c7-a534-9e14b231ac6f
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column sid
+		dataType: int64
+		formatString: 0
+		lineageTag: 8d72362c-87a2-41b6-bab9-37b999e3e340
+		summarizeBy: sum
+		sourceColumn: sid
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public staff_list' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_staff_list = Source{[Schema="public",Item="staff_list"]}[Data]
+				in
+				    public_staff_list
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,53 @@
+table 'AdventureWorks Calendar Lookup'
+	lineageTag: b250bdc1-cf6f-4c41-81c3-9c36a48aa527
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 65a25691-ddb4-4168-80e6-06f19b5afd65
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: e6532525-14dd-4dff-be6d-38847170dac7
+			defaultHierarchy: LocalDateTable_b8f79e1d-ce22-4523-9c6b-aefa7294daf3.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year = YEAR('AdventureWorks Calendar Lookup'[Date])
+		dataType: int64
+		lineageTag: 34846257-7d0a-483f-a25c-8c4aed713c26
+
+	column 'Month Name' = FORMAT('AdventureWorks Calendar Lookup'[Date], "MMMM")
+		dataType: string
+		lineageTag: 1be46348-71bb-4d8d-a912-eac0bbee2938
+
+	column 'Month Short' = FORMAT('AdventureWorks Calendar Lookup'[Date], "MMM")
+		dataType: string
+		lineageTag: c3d82baa-2c79-49c3-a1db-483f89030924
+
+	column Quarter = "Q" & QUARTER('AdventureWorks Calendar Lookup'[Date])
+		dataType: string
+		lineageTag: 8c717a1b-7c1c-442d-b11b-67e1370672eb
+
+	column Weekday/Weekend = IF(WEEKDAY('AdventureWorks Calendar Lookup'[Date], 2) >= 6, "Weekend", "Weekday")
+		dataType: string
+		lineageTag: 1b3c0678-ee4d-4316-8c7a-641f4bf203c8
+
+	partition 'AdventureWorks Calendar Lookup' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\oping\OneDrive\Desktop\Power BI Maven Analytics\AdventureWorks+Raw+Data\AdventureWorks Raw Data\AdventureWorks Calendar Lookup.csv"),[Delimiter=",", Columns=1, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

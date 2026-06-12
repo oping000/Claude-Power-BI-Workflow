@@ -1,0 +1,58 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["public actor_info","public customer_list","public film_list","public nicer_but_slower_film_list","public sales_by_film_category","public sales_by_store","public staff_list","public category","public country","public city","public customer","public film_actor","public film_category","public language","public inventory","public rental","public store","public staff","public address","public actor","public film","public payment"]
+
+annotation PBI_ProTooling = ["MCP-PBIModeling"]
+
+ref table 'public actor_info'
+ref table 'public customer_list'
+ref table 'public film_list'
+ref table 'public nicer_but_slower_film_list'
+ref table 'public sales_by_film_category'
+ref table 'public sales_by_store'
+ref table 'public staff_list'
+ref table 'public category'
+ref table DateTableTemplate_f69d48e5-7fe2-436d-a92f-84108d83d52c
+ref table LocalDateTable_75c0c71f-1a19-4e8e-bfe2-71686d6fd2a2
+ref table 'public country'
+ref table LocalDateTable_afcf0551-fa5e-485a-87b6-e7f6ba71e9b7
+ref table 'public city'
+ref table LocalDateTable_0258f012-7a02-4c57-bb91-eb584ff1b5fc
+ref table 'public customer'
+ref table LocalDateTable_81b8f859-a201-46da-a25c-c28f02745337
+ref table LocalDateTable_0e4f4dfe-c0d0-4cbc-8606-f52e540a053c
+ref table 'public film_actor'
+ref table LocalDateTable_e54ac623-eef8-4409-b505-5810a04964b9
+ref table 'public film_category'
+ref table LocalDateTable_9097de35-b370-4252-8a95-fc65c8946f5b
+ref table 'public language'
+ref table LocalDateTable_2f6df89e-0ca8-47bd-8eac-c0c494f6731c
+ref table 'public inventory'
+ref table LocalDateTable_347a1147-b4b3-4d8a-be46-3d33eb174b92
+ref table 'public rental'
+ref table LocalDateTable_f25f7c1d-0e0e-44ed-beda-dd3bcf75b6e0
+ref table LocalDateTable_e575b3f2-053f-45e3-9bfe-5c24cb6c1a80
+ref table LocalDateTable_8b069438-6a9e-4458-971f-2a42f025dd6f
+ref table 'public store'
+ref table LocalDateTable_0df337b3-3e04-4311-b821-89cfb23aebe0
+ref table 'public staff'
+ref table LocalDateTable_0254b70e-0d0e-4fae-809e-94a5baf7780c
+ref table 'public address'
+ref table LocalDateTable_8b20eb54-1b41-4548-9be0-7aa5441e0487
+ref table 'public actor'
+ref table LocalDateTable_6cf94d0b-f650-4440-87c7-7c9dada80220
+ref table 'public film'
+ref table LocalDateTable_ebda1856-9565-4d7a-a88a-522b0f67eb1a
+ref table 'public payment'
+ref table LocalDateTable_a3930467-cf23-4dcc-b8b7-11670245d184
+
+ref cultureInfo en-US
+

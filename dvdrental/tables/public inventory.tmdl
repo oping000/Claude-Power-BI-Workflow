@@ -1,0 +1,60 @@
+table 'public inventory'
+	lineageTag: fe02a87a-4611-4485-8d7f-d337a572ab0a
+
+	measure 'Total Inventory Items' = COUNTROWS('public inventory')
+		formatString: #,##0
+		displayFolder: Inventory
+		lineageTag: b9f1cef9-118c-4847-b251-d69c8295c038
+
+	column inventory_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 96a2c174-4349-4a71-8647-93b4d130fbd9
+		summarizeBy: none
+		sourceColumn: inventory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column film_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e87ae60-bfc6-4908-a58d-68f8e86be40f
+		summarizeBy: none
+		sourceColumn: film_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d5c2a0ae-18ec-470d-a9bd-0c6ba9207793
+		summarizeBy: sum
+		sourceColumn: store_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 854ffd2e-7438-43f4-8b34-b002fdd30b05
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: 6080554a-130d-4654-a28f-228a0d6c0827
+			defaultHierarchy: LocalDateTable_347a1147-b4b3-4d8a-be46-3d33eb174b92.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public inventory' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_inventory = Source{[Schema="public",Item="inventory"]}[Data]
+				in
+				    public_inventory
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,32 @@
+table 'public sales_by_film_category'
+	lineageTag: ea6e3589-037a-45c8-8db6-ebecf1ca6881
+
+	column category
+		dataType: string
+		lineageTag: 146adf63-117f-4bb4-b67e-02461e6df7f5
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_sales
+		dataType: double
+		lineageTag: 89e18c36-82b3-4a99-a177-77bcff4c813c
+		summarizeBy: sum
+		sourceColumn: total_sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'public sales_by_film_category' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_sales_by_film_category = Source{[Schema="public",Item="sales_by_film_category"]}[Data]
+				in
+				    public_sales_by_film_category
+
+	annotation PBI_ResultType = Table
+

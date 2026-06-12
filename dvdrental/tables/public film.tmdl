@@ -1,0 +1,138 @@
+table 'public film'
+	lineageTag: cc5ca711-e53b-494a-a74b-5d388cd35dde
+
+	measure 'Total Films' = COUNTROWS('public film')
+		formatString: #,##0
+		displayFolder: Inventory
+		lineageTag: 9d9d64c6-4628-4585-854e-67a4f3378105
+
+	column film_id
+		dataType: int64
+		formatString: 0
+		lineageTag: eb7266fc-379d-4c56-b67d-071c4735114c
+		summarizeBy: none
+		sourceColumn: film_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: b05f08ad-5b35-4480-a6e9-5f3f4d7f8825
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: f3282952-812c-4ee7-ac53-d7f73ffad125
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column release_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 6b89469e-54b3-4e1c-9626-2461426e4f0d
+		summarizeBy: sum
+		sourceColumn: release_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column language_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ba120df4-6852-4d51-a079-58f324fa8c20
+		summarizeBy: none
+		sourceColumn: language_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column rental_duration
+		dataType: int64
+		formatString: 0
+		lineageTag: 29d8ce8d-9463-40f9-864a-fa731d11d944
+		summarizeBy: sum
+		sourceColumn: rental_duration
+
+		annotation SummarizationSetBy = Automatic
+
+	column rental_rate
+		dataType: double
+		lineageTag: 8c88f20a-0aa1-4732-8be6-8d0832581d23
+		summarizeBy: sum
+		sourceColumn: rental_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column length
+		dataType: int64
+		formatString: 0
+		lineageTag: a7a9021d-3650-4ca7-b031-f104c6308b8c
+		summarizeBy: sum
+		sourceColumn: length
+
+		annotation SummarizationSetBy = Automatic
+
+	column replacement_cost
+		dataType: double
+		lineageTag: d212e601-f05f-4c58-9f58-3dc919594c08
+		summarizeBy: sum
+		sourceColumn: replacement_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column rating
+		dataType: string
+		lineageTag: ad333750-9147-49e2-a575-51e6c462eafa
+		summarizeBy: none
+		sourceColumn: rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 05609113-ed93-4143-8c0f-4a74af56f23c
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: f6696f52-fb2a-4e1f-a075-2d0949214c0a
+			defaultHierarchy: LocalDateTable_ebda1856-9565-4d7a-a88a-522b0f67eb1a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column special_features
+		dataType: string
+		lineageTag: 5d85dccf-e886-4ea4-bf7d-4acf72dce724
+		summarizeBy: none
+		sourceColumn: special_features
+
+		annotation SummarizationSetBy = Automatic
+
+	column fulltext
+		dataType: string
+		lineageTag: 974cc215-b697-4729-a3eb-a01b92cd2b41
+		summarizeBy: none
+		sourceColumn: fulltext
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public film' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_film = Source{[Schema="public",Item="film"]}[Data]
+				in
+				    public_film
+
+	annotation PBI_ResultType = Table
+

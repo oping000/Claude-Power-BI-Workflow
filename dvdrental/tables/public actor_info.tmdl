@@ -1,0 +1,47 @@
+table 'public actor_info'
+	lineageTag: 4a0c521e-a2de-4869-bad5-994bd4d983dd
+
+	column actor_id
+		dataType: int64
+		formatString: 0
+		lineageTag: fce094f4-f58d-4b2b-b54e-2d85cef2e6e3
+		summarizeBy: sum
+		sourceColumn: actor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_name
+		dataType: string
+		lineageTag: 13a55e9a-bda2-4c7a-a853-f5675bac82a4
+		summarizeBy: none
+		sourceColumn: first_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_name
+		dataType: string
+		lineageTag: 1eafadc1-1f79-444f-8983-c16db9e68b92
+		summarizeBy: none
+		sourceColumn: last_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column film_info
+		dataType: string
+		lineageTag: 7b35a1c0-b6ab-49a4-9f93-f21171d94625
+		summarizeBy: none
+		sourceColumn: film_info
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public actor_info' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_actor_info = Source{[Schema="public",Item="actor_info"]}[Data]
+				in
+				    public_actor_info
+
+	annotation PBI_ResultType = Table
+

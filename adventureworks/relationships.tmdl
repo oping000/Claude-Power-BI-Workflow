@@ -1,0 +1,62 @@
+relationship 903b5ab8-fa37-4ca5-9382-fa426a36e143
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Sales Data'.OrderDate
+	toColumn: LocalDateTable_6c37bb95-382a-4bcf-a722-8d8b9eb55bea.Date
+
+relationship d20bf79f-e6c8-421a-9ac8-7df706190faf
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Sales Data'.StockDate
+	toColumn: LocalDateTable_61539fad-3acc-42b2-b372-cb9ddce77428.Date
+
+relationship e6532525-14dd-4dff-be6d-38847170dac7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'AdventureWorks Calendar Lookup'.Date
+	toColumn: LocalDateTable_b8f79e1d-ce22-4523-9c6b-aefa7294daf3.Date
+
+relationship ad93da7c-43bc-4708-9ac3-9772a37f7952
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'AdventureWorks Returns Data'.ReturnDate
+	toColumn: LocalDateTable_1f1b4f2e-1d33-49e5-a0c7-a7b4f7c12731.Date
+
+relationship AutoDetected_37b428dd-bde7-40ad-a370-2b7ba73cb8ac
+	fromColumn: 'Sales Data'.ProductKey
+	toColumn: 'AdventureWorks Product Lookup'.ProductKey
+
+relationship AutoDetected_76ba2fa4-0310-4bb7-8228-d4704b672c83
+	fromColumn: 'AdventureWorks Returns Data'.ProductKey
+	toColumn: 'AdventureWorks Product Lookup'.ProductKey
+
+relationship AutoDetected_cfd7357d-1052-4f40-b43e-b481df34c23b
+	fromColumn: 'AdventureWorks Product Subcategories Lookup'.ProductCategoryKey
+	toColumn: 'AdventureWorks Product Categories Lookup'.ProductCategoryKey
+
+relationship AutoDetected_9af2e094-1aed-482a-baaa-7837c4889ee8
+	fromColumn: 'AdventureWorks Product Lookup'.ProductSubcategoryKey
+	toColumn: 'AdventureWorks Product Subcategories Lookup'.ProductSubcategoryKey
+
+relationship 'Sales Data_OrderDate_AdventureWorks Calendar Lookup_Date'
+	fromColumn: 'Sales Data'.OrderDate
+	toColumn: 'AdventureWorks Calendar Lookup'.Date
+
+relationship 'AdventureWorks Returns Data_ReturnDate_AdventureWorks Calendar Lookup_Date'
+	isActive: false
+	fromColumn: 'AdventureWorks Returns Data'.ReturnDate
+	toColumn: 'AdventureWorks Calendar Lookup'.Date
+
+relationship 'Sales Data_CustomerKey_AdventureWorks Customer Lookup_CustomerKey'
+	fromColumn: 'Sales Data'.CustomerKey
+	toColumn: 'AdventureWorks Customer Lookup'.CustomerKey
+
+relationship 'Sales Data_TerritoryKey_AdventureWorks Territory Lookup_SalesTerritoryKey'
+	fromColumn: 'Sales Data'.TerritoryKey
+	toColumn: 'AdventureWorks Territory Lookup'.SalesTerritoryKey
+
+relationship 'AdventureWorks Returns Data_TerritoryKey_AdventureWorks Territory Lookup_SalesTerritoryKey'
+	fromColumn: 'AdventureWorks Returns Data'.TerritoryKey
+	toColumn: 'AdventureWorks Territory Lookup'.SalesTerritoryKey
+
+relationship cb7c8a5e-fb29-4f79-836a-ea608b17f0b6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'AdventureWorks Customer Lookup'.BirthDate
+	toColumn: LocalDateTable_73310873-4e6a-4c34-8179-577e6a7ed9b6.Date
+

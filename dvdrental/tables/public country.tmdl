@@ -1,0 +1,45 @@
+table 'public country'
+	lineageTag: 6ed11281-64d6-41e6-ad62-d2f171fb7f22
+
+	column country_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0db7ae27-f780-4e49-9fe1-b50c95c7c9f3
+		summarizeBy: none
+		sourceColumn: country_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 188bc128-79e7-4521-8e00-7d7ef1c0752b
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8b1a7aa5-b581-47bf-a782-351bb9fd6042
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: 279147d0-06ff-4949-8058-34218fce0bc9
+			defaultHierarchy: LocalDateTable_afcf0551-fa5e-485a-87b6-e7f6ba71e9b7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public country' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_country = Source{[Schema="public",Item="country"]}[Data]
+				in
+				    public_country
+
+	annotation PBI_ResultType = Table
+

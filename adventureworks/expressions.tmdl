@@ -1,0 +1,67 @@
+expression Parameter1 = #"Sample File" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: f8c59e1c-b682-4cc9-9509-bd178d6dd7e5
+	queryGroup: 'Transform File from Sales Data\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Sample File' =
+		let
+		    Source = Folder.Files("C:\Users\oping\OneDrive\Desktop\Power BI Maven Analytics\AdventureWorks+Raw+Data\AdventureWorks Raw Data\Sales Data"),
+		    Navigation1 = Source{0}[Content]
+		in
+		    Navigation1
+	lineageTag: 567a5c5a-5091-494f-8b0e-09f5aab628ac
+	queryGroup: 'Transform File from Sales Data\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform Sample File' =
+		let
+		    Source = Csv.Document(Parameter1,[Delimiter=",", Columns=8, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+	lineageTag: 555bff70-b10f-4dc9-9862-d148aa7ab386
+	queryGroup: 'Transform File from Sales Data'
+
+	annotation PBI_ResultType = Table
+
+expression 'Transform File' =
+		let
+		    Source = (Parameter1 as binary) => let
+		    Source = Csv.Document(Parameter1,[Delimiter=",", Columns=8, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+		in
+		    Source
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File""}" ]
+	lineageTag: d3a17b89-117b-4116-9512-aaa93e703c30
+	queryGroup: 'Transform File from Sales Data\Helper Queries'
+
+	annotation PBI_ResultType = Function
+
+expression 'Errors in AdventureWorks Customer Lookup' =
+		let
+		Source = #"AdventureWorks Customer Lookup",
+		  #"Detected Type Mismatches" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "The type of the value does not match the type of the column.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Source, pairs),
+		  #"Added Index" = Table.AddIndexColumn(#"Detected Type Mismatches", "Row Number" ,1),
+		  #"Kept Errors" = Table.SelectRowsWithErrors(#"Added Index", {"CustomerKey", "Prefix", "FirstName", "LastName", "BirthDate", "MaritalStatus", "Gender", "EmailAddress", "AnnualIncome", "TotalChildren", "EducationLevel", "Occupation", "HomeOwner"}),
+		  #"Reordered Columns" = Table.ReorderColumns(#"Kept Errors", {"Row Number", "CustomerKey", "Prefix", "FirstName", "LastName", "BirthDate", "MaritalStatus", "Gender", "EmailAddress", "AnnualIncome", "TotalChildren", "EducationLevel", "Occupation", "HomeOwner"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Reordered Columns",{{"CustomerKey", type text}})
+		in
+		  #"Changed Type"
+	lineageTag: f222c5eb-b641-4c45-8aa9-65ef0df8dc15
+	queryGroup: 'Query Errors - 6/12/2026 12:23:41 PM'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

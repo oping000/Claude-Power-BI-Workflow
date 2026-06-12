@@ -1,0 +1,54 @@
+table 'public city'
+	lineageTag: 22cd4576-8e65-42cc-b796-3ee2a5280d75
+
+	column city_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 49a4e42e-fdbf-45b8-9db1-054379d0b02c
+		summarizeBy: none
+		sourceColumn: city_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: e6283db6-8b3c-4838-b12c-cd48d9bf0cca
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column country_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1097f7df-4db0-471b-a7fe-46f562c7654e
+		summarizeBy: none
+		sourceColumn: country_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f67c3460-d09d-4f06-bb2c-a262f03a989b
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: ca0eff04-5c51-4346-b4c6-7c851b477d96
+			defaultHierarchy: LocalDateTable_0258f012-7a02-4c57-bb91-eb584ff1b5fc.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public city' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_city = Source{[Schema="public",Item="city"]}[Data]
+				in
+				    public_city
+
+	annotation PBI_ResultType = Table
+

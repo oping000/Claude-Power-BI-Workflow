@@ -1,0 +1,123 @@
+table 'AdventureWorks Product Lookup'
+	lineageTag: da51bb59-1ed2-4e8c-865e-ce53d8bacf72
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d3ec19e-aca6-4db5-9b08-7220d47e337a
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductSubcategoryKey
+		dataType: int64
+		formatString: 0
+		lineageTag: e19bc881-542e-4c9c-a890-875a62aa9f02
+		summarizeBy: none
+		sourceColumn: ProductSubcategoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductSKU
+		dataType: string
+		lineageTag: 9a4ce5b9-3853-4f1f-a612-7dcbb34f3ca1
+		summarizeBy: none
+		sourceColumn: ProductSKU
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: b0a4364e-7516-4832-b9be-8a4aa99bd662
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModelName
+		dataType: string
+		lineageTag: 263d61bc-9303-4fda-b576-3961bc36e03f
+		summarizeBy: none
+		sourceColumn: ModelName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductDescription
+		dataType: string
+		lineageTag: b0118e27-9ad6-42fe-8939-d49c1fc4b843
+		summarizeBy: none
+		sourceColumn: ProductDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductColor
+		dataType: string
+		lineageTag: 299c7244-1b7e-4dcf-a6ea-987d3fb9187a
+		summarizeBy: none
+		sourceColumn: ProductColor
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductSize
+		dataType: string
+		lineageTag: 080c0389-19ed-472b-ad4d-55b78d9a9db0
+		summarizeBy: none
+		sourceColumn: ProductSize
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductStyle
+		dataType: string
+		lineageTag: 02e805f1-743b-481c-9ae8-8e436100ef99
+		summarizeBy: none
+		sourceColumn: ProductStyle
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCost
+		dataType: double
+		lineageTag: ef8232bc-84cf-4b3c-9f2f-9e660dbdc3e3
+		summarizeBy: sum
+		sourceColumn: ProductCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProductPrice
+		dataType: double
+		lineageTag: 1bd20d21-d7a5-4f44-b6aa-d62180ab6a0d
+		summarizeBy: sum
+		sourceColumn: ProductPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Profit per Unit' = 'AdventureWorks Product Lookup'[ProductPrice] - 'AdventureWorks Product Lookup'[ProductCost]
+		dataType: double
+		lineageTag: d475d56b-aa5b-4616-a1d9-43f6ed8acbf1
+
+	column 'Profit Margin %' = DIVIDE('AdventureWorks Product Lookup'[ProductPrice] - 'AdventureWorks Product Lookup'[ProductCost], 'AdventureWorks Product Lookup'[ProductPrice], 0)
+		dataType: double
+		lineageTag: f26fb908-e604-4e62-a908-ccad47284e67
+
+	column 'Price Range' = IF('AdventureWorks Product Lookup'[ProductPrice] < 50, "Budget", IF('AdventureWorks Product Lookup'[ProductPrice] < 200, "Mid-Range", "Premium"))
+		dataType: string
+		lineageTag: 28e41888-42af-43a2-8389-b5fa783f786c
+
+	partition 'AdventureWorks Product Lookup' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\oping\OneDrive\Desktop\Power BI Maven Analytics\AdventureWorks+Raw+Data\AdventureWorks Raw Data\AdventureWorks Product Lookup.csv"),[Delimiter=",", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ProductKey", Int64.Type}, {"ProductSubcategoryKey", Int64.Type}, {"ProductSKU", type text}, {"ProductName", type text}, {"ModelName", type text}, {"ProductDescription", type text}, {"ProductColor", type text}, {"ProductSize", type text}, {"ProductStyle", type text}, {"ProductCost", type number}, {"ProductPrice", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

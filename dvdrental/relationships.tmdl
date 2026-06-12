@@ -1,0 +1,211 @@
+relationship 17120387-4c78-4d61-bd89-512b4cca7521
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public category'.last_update
+	toColumn: LocalDateTable_75c0c71f-1a19-4e8e-bfe2-71686d6fd2a2.Date
+
+relationship 279147d0-06ff-4949-8058-34218fce0bc9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public country'.last_update
+	toColumn: LocalDateTable_afcf0551-fa5e-485a-87b6-e7f6ba71e9b7.Date
+
+relationship ca0eff04-5c51-4346-b4c6-7c851b477d96
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public city'.last_update
+	toColumn: LocalDateTable_0258f012-7a02-4c57-bb91-eb584ff1b5fc.Date
+
+relationship d88021f1-7e86-44d3-8c02-84cea5f52a16
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public customer'.create_date
+	toColumn: LocalDateTable_81b8f859-a201-46da-a25c-c28f02745337.Date
+
+relationship 36ae328b-7f99-4d45-9480-e5625ee861d9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public customer'.last_update
+	toColumn: LocalDateTable_0e4f4dfe-c0d0-4cbc-8606-f52e540a053c.Date
+
+relationship be6b3601-49f2-410e-a897-2dfabf72fb6c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public film_actor'.last_update
+	toColumn: LocalDateTable_e54ac623-eef8-4409-b505-5810a04964b9.Date
+
+relationship 559300c8-9935-4ea6-91b3-980a633ec5c6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public film_category'.last_update
+	toColumn: LocalDateTable_9097de35-b370-4252-8a95-fc65c8946f5b.Date
+
+relationship ee795cb3-d404-4ee6-abc0-325c3fcfe8ba
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public language'.last_update
+	toColumn: LocalDateTable_2f6df89e-0ca8-47bd-8eac-c0c494f6731c.Date
+
+relationship 6080554a-130d-4654-a28f-228a0d6c0827
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public inventory'.last_update
+	toColumn: LocalDateTable_347a1147-b4b3-4d8a-be46-3d33eb174b92.Date
+
+relationship d3e8f81c-fe73-4f26-9dc9-9c6a4bb3a426
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public rental'.rental_date
+	toColumn: LocalDateTable_f25f7c1d-0e0e-44ed-beda-dd3bcf75b6e0.Date
+
+relationship dc38fafc-5165-480d-9c19-ae2e5f2ab272
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public rental'.return_date
+	toColumn: LocalDateTable_e575b3f2-053f-45e3-9bfe-5c24cb6c1a80.Date
+
+relationship e0af8162-3ec3-430a-afd6-9a5e378ac7d8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public rental'.last_update
+	toColumn: LocalDateTable_8b069438-6a9e-4458-971f-2a42f025dd6f.Date
+
+relationship 749e6663-3eed-4f05-b205-6d17b40fd0b7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public store'.last_update
+	toColumn: LocalDateTable_0df337b3-3e04-4311-b821-89cfb23aebe0.Date
+
+relationship bd6b9da7-016a-41a2-aa2d-c913b2cfe6e0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public staff'.last_update
+	toColumn: LocalDateTable_0254b70e-0d0e-4fae-809e-94a5baf7780c.Date
+
+relationship 314f21fd-3bfa-45d5-98fc-0a6003f1beda
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public address'.last_update
+	toColumn: LocalDateTable_8b20eb54-1b41-4548-9be0-7aa5441e0487.Date
+
+relationship e385a23c-dcfb-4548-9f18-76e83976fb73
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public actor'.last_update
+	toColumn: LocalDateTable_6cf94d0b-f650-4440-87c7-7c9dada80220.Date
+
+relationship f6696f52-fb2a-4e1f-a075-2d0949214c0a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public film'.last_update
+	toColumn: LocalDateTable_ebda1856-9565-4d7a-a88a-522b0f67eb1a.Date
+
+relationship 3622e78e-3bd3-4b11-8df0-3000955c1899
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public payment'.payment_date
+	toColumn: LocalDateTable_a3930467-cf23-4dcc-b8b7-11670245d184.Date
+
+relationship d0242b0e-5a6b-4fd3-bdb6-14ebb6b48cb3
+	fromColumn: 'public city'.country_id
+	toColumn: 'public country'.country_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship b3828253-eb8d-4d87-b896-a86f6eb639ae
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'public customer'.address_id
+	toColumn: 'public address'.address_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 998b3451-37bb-4018-9862-3066acecaa27
+	fromColumn: 'public film_actor'.actor_id
+	toColumn: 'public actor'.actor_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 675dcb50-f064-406d-872c-d74a1ca5f73d
+	fromColumn: 'public film_actor'.film_id
+	toColumn: 'public film'.film_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 24a3ce33-705f-45de-9b35-a6687b44dad5
+	fromColumn: 'public film_category'.category_id
+	toColumn: 'public category'.category_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 2e67db2f-c208-42bf-8fb3-0efca626157a
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'public film_category'.film_id
+	toColumn: 'public film'.film_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 2cf4b408-7777-4612-b674-24fe96d76d6c
+	fromColumn: 'public inventory'.film_id
+	toColumn: 'public film'.film_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 5012e2eb-b358-4e0c-94e4-4d8933ec67f2
+	fromColumn: 'public rental'.customer_id
+	toColumn: 'public customer'.customer_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 0dc418ce-a482-4cd3-b000-0bdfa46474c0
+	fromColumn: 'public rental'.inventory_id
+	toColumn: 'public inventory'.inventory_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship d2821954-68b7-4760-acf3-366b62b21b31
+	fromColumn: 'public rental'.staff_id
+	toColumn: 'public staff'.staff_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship bbb613b3-aa29-4859-b78a-3fa140040ebf
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'public store'.address_id
+	toColumn: 'public address'.address_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 9fe43324-b237-42a0-b67e-2367d9550ae6
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'public store'.manager_staff_id
+	toColumn: 'public staff'.staff_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 5add0ffc-b600-450f-b997-b556e918fed0
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'public staff'.address_id
+	toColumn: 'public address'.address_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 771072f8-0097-4d62-85f8-b9f6509cefd4
+	fromColumn: 'public address'.city_id
+	toColumn: 'public city'.city_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 7fd36adf-d2d0-49ea-bd8f-e21f65312da2
+	fromColumn: 'public film'.language_id
+	toColumn: 'public language'.language_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 01332daf-1619-4576-97e2-ee8d628f7664
+	fromColumn: 'public payment'.customer_id
+	toColumn: 'public customer'.customer_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 05a8a09d-1266-4ed0-8536-2fb414b7021c
+	isActive: false
+	fromColumn: 'public payment'.rental_id
+	toColumn: 'public rental'.rental_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 6c934e78-2309-4b71-8b45-760143f75f22
+	fromColumn: 'public payment'.staff_id
+	toColumn: 'public staff'.staff_id
+
+	annotation PBI_IsFromSource = FS
+

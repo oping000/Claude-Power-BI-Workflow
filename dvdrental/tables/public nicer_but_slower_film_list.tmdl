@@ -1,0 +1,82 @@
+table 'public nicer_but_slower_film_list'
+	lineageTag: 25a47e39-c637-411a-bf2c-695ff7417417
+
+	column fid
+		dataType: int64
+		formatString: 0
+		lineageTag: 83d34ff2-a51a-425f-bc06-f3d8d700166a
+		summarizeBy: sum
+		sourceColumn: fid
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: 46686917-a04e-4074-ba1d-2fc3c0ac2b52
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: f25526b6-f990-4bb3-aee9-bd59e9cf820b
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: dc78a37c-4a7a-4944-8822-5e9150781af3
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column price
+		dataType: double
+		lineageTag: 9cd11863-861c-4e80-a343-18ebb149d68d
+		summarizeBy: sum
+		sourceColumn: price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column length
+		dataType: int64
+		formatString: 0
+		lineageTag: 4edd5d8c-3794-4bc7-9945-e582387dcc2a
+		summarizeBy: sum
+		sourceColumn: length
+
+		annotation SummarizationSetBy = Automatic
+
+	column rating
+		dataType: string
+		lineageTag: 3e8eb36f-12a5-4f43-9edf-86dcb768b29f
+		summarizeBy: none
+		sourceColumn: rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column actors
+		dataType: string
+		lineageTag: 182b1014-1578-44ba-ba8c-6629247f6d8e
+		summarizeBy: none
+		sourceColumn: actors
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public nicer_but_slower_film_list' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_nicer_but_slower_film_list = Source{[Schema="public",Item="nicer_but_slower_film_list"]}[Data]
+				in
+				    public_nicer_but_slower_film_list
+
+	annotation PBI_ResultType = Table
+

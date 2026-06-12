@@ -1,0 +1,177 @@
+table 'Sales Data'
+	lineageTag: 6ce79d50-7736-4228-b5b3-e4a7b8e462a3
+
+	measure 'Total Revenue' = SUMX('Sales Data', 'Sales Data'[OrderQuantity] * RELATED('AdventureWorks Product Lookup'[ProductPrice]))
+		formatString: $#,##0.00
+		displayFolder: Revenue
+		lineageTag: 33c7eeaa-8813-45d5-a0c4-088fb7ff072e
+
+	measure 'Total Cost' = SUMX('Sales Data', 'Sales Data'[OrderQuantity] * RELATED('AdventureWorks Product Lookup'[ProductCost]))
+		formatString: $#,##0.00
+		displayFolder: Revenue
+		lineageTag: 25bf5592-84ae-4105-b091-7070b79e3ea6
+
+	measure 'Total Profit' = [Total Revenue] - [Total Cost]
+		formatString: $#,##0.00
+		displayFolder: Revenue
+		lineageTag: ad4d0cb0-506e-4faf-80bc-c7de8acdd3ce
+
+	measure 'Profit Margin %' = DIVIDE([Total Profit], [Total Revenue], 0)
+		formatString: 0.0%
+		displayFolder: Revenue
+		lineageTag: f57b7126-1aff-409b-b510-2e1a8b5cc8d0
+
+	measure 'Total Orders' = COUNTROWS('Sales Data')
+		formatString: #,##0
+		displayFolder: Orders
+		lineageTag: a3faedb1-fe9e-464f-9e16-76e2f068a5ed
+
+	measure 'Total Transactions' = DISTINCTCOUNT('Sales Data'[OrderNumber])
+		formatString: #,##0
+		displayFolder: Orders
+		lineageTag: 3e849571-2275-42c2-a3d2-29b4fbf34a8b
+
+	measure 'Total Quantity' = SUM('Sales Data'[OrderQuantity])
+		formatString: #,##0
+		displayFolder: Orders
+		lineageTag: 6505ddf0-721b-46b8-9560-601da022e0f1
+
+	measure 'Avg Order Value' = DIVIDE([Total Revenue], [Total Transactions], 0)
+		formatString: $#,##0.00
+		displayFolder: Orders
+		lineageTag: 46836f79-b378-4abe-a201-2695e38795fe
+
+	measure 'Total Customers' = DISTINCTCOUNT('Sales Data'[CustomerKey])
+		formatString: #,##0
+		displayFolder: Customers
+		lineageTag: 93015d14-7922-4b04-aec8-78014e268752
+
+	measure 'Revenue per Customer' = DIVIDE([Total Revenue], [Total Customers], 0)
+		formatString: $#,##0.00
+		displayFolder: Customers
+		lineageTag: 3f9fd937-1856-441b-832e-88b28306f50c
+
+	measure 'Revenue MoM %' =
+			VAR CurrentMonth = [Total Revenue]
+			VAR PrevMonth = CALCULATE([Total Revenue], DATEADD('AdventureWorks Calendar Lookup'[Date], -1, MONTH))
+			RETURN DIVIDE(CurrentMonth - PrevMonth, PrevMonth, 0)
+		formatString: 0.0%
+		displayFolder: Revenue
+		lineageTag: 7ce6a3cf-e5d0-4667-a456-5debeb9a6b22
+
+	column OrderDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4225e5cf-60c4-446d-a306-49ca3d499e49
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		variation Variation
+			isDefault
+			relationship: 903b5ab8-fa37-4ca5-9382-fa426a36e143
+			defaultHierarchy: LocalDateTable_6c37bb95-382a-4bcf-a722-8d8b9eb55bea.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column StockDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b6ef300c-46d1-49a5-8306-3acf08f79ba8
+		summarizeBy: none
+		sourceColumn: StockDate
+
+		variation Variation
+			isDefault
+			relationship: d20bf79f-e6c8-421a-9ac8-7df706190faf
+			defaultHierarchy: LocalDateTable_61539fad-3acc-42b2-b372-cb9ddce77428.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column OrderNumber
+		dataType: string
+		lineageTag: 18de0334-063f-4926-acf6-2c841589116b
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 8db3b2ca-ec04-4ba7-855d-0a99d6a89471
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: bacf93c1-fcd2-4081-addb-97e9da579d40
+		summarizeBy: count
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryKey
+		dataType: int64
+		formatString: 0
+		lineageTag: be9b9e9a-73b7-4f41-bfa7-a97da2317513
+		summarizeBy: count
+		sourceColumn: TerritoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderLineItem
+		dataType: int64
+		formatString: 0
+		lineageTag: 143b352d-e17a-44d9-84ee-6992913ebae6
+		summarizeBy: sum
+		sourceColumn: OrderLineItem
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderQuantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 38aa2f78-085e-43c2-bd41-b397c71938a3
+		summarizeBy: sum
+		sourceColumn: OrderQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Year' = YEAR('Sales Data'[OrderDate])
+		dataType: int64
+		lineageTag: 9d663093-2999-4ceb-8b7e-6315e3413c97
+
+	column 'Order Month' = FORMAT('Sales Data'[OrderDate], "MMMM")
+		dataType: string
+		lineageTag: 973da528-6b7b-49c8-83f5-b0f64e623fae
+
+	column 'Order Day of Week' = FORMAT('Sales Data'[OrderDate], "DDDD")
+		dataType: string
+		lineageTag: 4fc46e39-b756-44da-bfb9-2c43ee97acad
+
+	partition 'Sales Data' = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files("C:\Users\oping\OneDrive\Desktop\Power BI Maven Analytics\AdventureWorks+Raw+Data\AdventureWorks Raw Data\Sales Data"),
+				    #"Filtered Hidden Files1" = Table.SelectRows(Source, each [Attributes]?[Hidden]? <> true),
+				    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File", each #"Transform File"([Content])),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File"}),
+				    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File", Table.ColumnNames(#"Transform File"(#"Sample File"))),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Source.Name", type text}, {"OrderDate", type date}, {"StockDate", type date}, {"OrderNumber", type text}, {"ProductKey", Int64.Type}, {"CustomerKey", Int64.Type}, {"TerritoryKey", Int64.Type}, {"OrderLineItem", Int64.Type}, {"OrderQuantity", Int64.Type}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Source.Name"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

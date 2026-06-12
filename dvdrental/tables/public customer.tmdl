@@ -1,0 +1,141 @@
+table 'public customer'
+	lineageTag: fd09a366-42b5-44ab-a991-f75b6413c0cb
+
+	measure 'Total Customers' = COUNTROWS('public customer')
+		formatString: #,##0
+		displayFolder: Customers
+		lineageTag: 369a3407-735a-4fc6-88db-eb7294ddcf6c
+
+	measure 'Active Customers' = CALCULATE(COUNTROWS('public customer'), 'public customer'[activebool] = TRUE())
+		formatString: #,##0
+		displayFolder: Customers
+		lineageTag: e6491741-d217-487f-8c9a-1b1bc8f28e5d
+
+	measure 'Revenue per Customer' = DIVIDE([Total Revenue], [Total Customers], 0)
+		formatString: $#,##0.00
+		displayFolder: Customers
+		lineageTag: e45cf75d-3b30-4e29-8a1e-3ae5f3f62d52
+
+	measure 'Rentals per Customer' = DIVIDE([Total Rentals], [Total Customers], 0)
+		formatString: #,##0.0
+		displayFolder: Customers
+		lineageTag: 2fa05dc9-f864-4f55-878e-416f09efebc0
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d597a2d5-f9ea-4d37-b607-04bc85adc766
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f3f1f653-9e2a-40c9-a38e-ac7e1415f160
+		summarizeBy: sum
+		sourceColumn: store_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_name
+		dataType: string
+		lineageTag: a097ed74-57b1-4115-bd92-d52bb5c5cfbf
+		summarizeBy: none
+		sourceColumn: first_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_name
+		dataType: string
+		lineageTag: 56e09f25-0990-4f40-a336-fece004f44cb
+		summarizeBy: none
+		sourceColumn: last_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: 4aa2caef-97dc-4d91-8356-8922a09e464a
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column address_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e6d118e1-0c98-4f66-8ff1-692f2b2c683c
+		summarizeBy: none
+		sourceColumn: address_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column activebool
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5356ae1d-09d4-4bdf-beae-e2a110c1a816
+		summarizeBy: none
+		sourceColumn: activebool
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 90555ddf-4e69-4b39-9c9f-bbbcbab53866
+		summarizeBy: none
+		sourceColumn: create_date
+
+		variation Variation
+			isDefault
+			relationship: d88021f1-7e86-44d3-8c02-84cea5f52a16
+			defaultHierarchy: LocalDateTable_81b8f859-a201-46da-a25c-c28f02745337.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b5ee4a59-6583-4fbe-9474-55bb56934853
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: 36ae328b-7f99-4d45-9480-e5625ee861d9
+			defaultHierarchy: LocalDateTable_0e4f4dfe-c0d0-4cbc-8606-f52e540a053c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column active
+		dataType: int64
+		formatString: 0
+		lineageTag: 5a0e0df5-153e-4209-9c96-22e876acae84
+		summarizeBy: sum
+		sourceColumn: active
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Full Name' = 'public customer'[first_name] & " " & 'public customer'[last_name]
+		dataType: string
+		lineageTag: acc30e9f-6134-4835-bb4b-07ccaef6ae85
+
+	column Status = IF('public customer'[activebool], "Active", "Inactive")
+		dataType: string
+		lineageTag: 7cf2edb7-31b3-478c-83ca-3a829670d7c7
+
+	partition 'public customer' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_customer = Source{[Schema="public",Item="customer"]}[Data]
+				in
+				    public_customer
+
+	annotation PBI_ResultType = Table
+

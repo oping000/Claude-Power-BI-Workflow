@@ -1,0 +1,124 @@
+table 'public rental'
+	lineageTag: c62a3153-93d9-4088-bfed-4bd82c0480e6
+
+	measure 'Total Rentals' = COUNTROWS('public rental')
+		formatString: #,##0
+		displayFolder: Rentals
+		lineageTag: d1c46605-8206-4bc4-920d-ed1a4bf54186
+
+	measure 'Active Rentals' = CALCULATE(COUNTROWS('public rental'), ISBLANK('public rental'[return_date]))
+		formatString: #,##0
+		displayFolder: Rentals
+		lineageTag: 0730bda0-689c-4a76-be87-beed053c7a3c
+
+	measure 'Returned Rentals' = CALCULATE(COUNTROWS('public rental'), NOT(ISBLANK('public rental'[return_date])))
+		formatString: #,##0
+		displayFolder: Rentals
+		lineageTag: 56258d1c-5e10-474f-9ac4-b0e6947b2c0c
+
+	measure 'Return Rate %' = DIVIDE([Returned Rentals], [Total Rentals], 0)
+		formatString: 0.0%
+		displayFolder: Rentals
+		lineageTag: f9f34ede-333c-4ac3-a8ab-1f7eef93f5d3
+
+	column rental_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b1d0109b-7e5d-49e9-91d8-39a30b2191f3
+		summarizeBy: sum
+		sourceColumn: rental_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column rental_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 065c06c9-39cf-4e7e-bf61-b9ccdfaa6831
+		summarizeBy: none
+		sourceColumn: rental_date
+
+		variation Variation
+			isDefault
+			relationship: d3e8f81c-fe73-4f26-9dc9-9c6a4bb3a426
+			defaultHierarchy: LocalDateTable_f25f7c1d-0e0e-44ed-beda-dd3bcf75b6e0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column inventory_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 879c54c4-9533-4d66-a432-5e223ddd5d45
+		summarizeBy: none
+		sourceColumn: inventory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b26b779-8024-4132-94f4-ce0a13249f9f
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column return_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3885dd87-9234-4e22-a711-3a5a8af32205
+		summarizeBy: none
+		sourceColumn: return_date
+
+		variation Variation
+			isDefault
+			relationship: dc38fafc-5165-480d-9c19-ae2e5f2ab272
+			defaultHierarchy: LocalDateTable_e575b3f2-053f-45e3-9bfe-5c24cb6c1a80.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column staff_id
+		dataType: int64
+		formatString: 0
+		lineageTag: bdac77e3-4373-4a6e-b719-68d2a46c49b8
+		summarizeBy: none
+		sourceColumn: staff_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9fcbbb15-3a18-4edc-ba0f-1ea20b205089
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: e0af8162-3ec3-430a-afd6-9a5e378ac7d8
+			defaultHierarchy: LocalDateTable_8b069438-6a9e-4458-971f-2a42f025dd6f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rental Month' = FORMAT('public rental'[rental_date], "YYYY-MM")
+		dataType: string
+		lineageTag: 449b528c-e2be-44cf-8ec6-231ab26f110e
+
+	column 'Rental Duration Days' = DATEDIFF('public rental'[rental_date], 'public rental'[return_date], DAY)
+		dataType: int64
+		lineageTag: 365edbb2-97fb-49c6-92a0-c9d7de65f530
+
+	column 'Rental Status' = IF(ISBLANK('public rental'[return_date]), "Out", "Returned")
+		dataType: string
+		lineageTag: 1628400b-7007-4da2-9292-2f18fa08c414
+
+	partition 'public rental' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_rental = Source{[Schema="public",Item="rental"]}[Data]
+				in
+				    public_rental
+
+	annotation PBI_ResultType = Table
+

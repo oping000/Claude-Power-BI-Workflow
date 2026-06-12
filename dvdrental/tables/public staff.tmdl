@@ -1,0 +1,113 @@
+table 'public staff'
+	lineageTag: 62088162-9942-4e1f-a7a7-669d6e9f1a34
+
+	measure 'Total Staff' = COUNTROWS('public staff')
+		formatString: #,##0
+		displayFolder: Operations
+		lineageTag: 56be601b-ef1f-47f3-9a73-0d2ca661991e
+
+	column staff_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5035506f-29be-4398-8aec-300321d2dbff
+		summarizeBy: none
+		sourceColumn: staff_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_name
+		dataType: string
+		lineageTag: 068b5383-4103-46ab-8f8e-d03bc219448e
+		summarizeBy: none
+		sourceColumn: first_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_name
+		dataType: string
+		lineageTag: 1820c86d-eb8f-4df2-822e-97c491ed19a7
+		summarizeBy: none
+		sourceColumn: last_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column address_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e8350857-4142-479d-8133-11eb6257418d
+		summarizeBy: sum
+		sourceColumn: address_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: f62fc046-1284-4274-b747-590a45bd4979
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 75f11e0f-cc01-47c2-bc4f-16459c73be56
+		summarizeBy: sum
+		sourceColumn: store_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column active
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 499745dd-c5a0-485d-8937-9aa45acad608
+		summarizeBy: none
+		sourceColumn: active
+
+		annotation SummarizationSetBy = Automatic
+
+	column username
+		dataType: string
+		lineageTag: fef8f9d8-342e-4c69-9a73-79aa2078a0f8
+		summarizeBy: none
+		sourceColumn: username
+
+		annotation SummarizationSetBy = Automatic
+
+	column password
+		dataType: string
+		lineageTag: 8c966735-f147-4936-89ee-216847816302
+		summarizeBy: none
+		sourceColumn: password
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 99301035-6e97-4bc2-810e-1f940801fb18
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: bd6b9da7-016a-41a2-aa2d-c913b2cfe6e0
+			defaultHierarchy: LocalDateTable_0254b70e-0d0e-4fae-809e-94a5baf7780c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Full Name' = 'public staff'[first_name] & " " & 'public staff'[last_name]
+		dataType: string
+		lineageTag: fc58c880-7790-4b9c-b6a6-e58542414b69
+
+	partition 'public staff' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_staff = Source{[Schema="public",Item="staff"]}[Data]
+				in
+				    public_staff
+
+	annotation PBI_ResultType = Table
+

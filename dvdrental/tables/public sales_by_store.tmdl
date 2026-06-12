@@ -1,0 +1,40 @@
+table 'public sales_by_store'
+	lineageTag: 10b9ce02-45cb-4b39-9aad-597140d7de0d
+
+	column store
+		dataType: string
+		lineageTag: a8b70174-3f82-414c-aec7-e092dcc3a06c
+		summarizeBy: none
+		sourceColumn: store
+
+		annotation SummarizationSetBy = Automatic
+
+	column manager
+		dataType: string
+		lineageTag: 9c9df7d8-1b94-45aa-b7f8-8275138365e8
+		summarizeBy: none
+		sourceColumn: manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_sales
+		dataType: double
+		lineageTag: 38e4eae9-c46a-42e4-a643-b6f7b14b9976
+		summarizeBy: sum
+		sourceColumn: total_sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'public sales_by_store' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_sales_by_store = Source{[Schema="public",Item="sales_by_store"]}[Data]
+				in
+				    public_sales_by_store
+
+	annotation PBI_ResultType = Table
+

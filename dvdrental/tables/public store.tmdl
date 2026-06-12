@@ -1,0 +1,55 @@
+table 'public store'
+	lineageTag: e1d1630a-f9b9-4783-acd4-18b6c0fdcf50
+
+	column store_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b776482-d81d-4647-bc33-0dc174699d95
+		summarizeBy: sum
+		sourceColumn: store_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column manager_staff_id
+		dataType: int64
+		formatString: 0
+		lineageTag: eba42ce2-1d2a-4854-897a-da23e8cb9ad7
+		summarizeBy: sum
+		sourceColumn: manager_staff_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column address_id
+		dataType: int64
+		formatString: 0
+		lineageTag: be4e42bf-7412-4dc4-8e35-8260d3820aa8
+		summarizeBy: none
+		sourceColumn: address_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ed617185-33a7-4025-a71c-53f0c0407c1a
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: 749e6663-3eed-4f05-b205-6d17b40fd0b7
+			defaultHierarchy: LocalDateTable_0df337b3-3e04-4311-b821-89cfb23aebe0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public store' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_store = Source{[Schema="public",Item="store"]}[Data]
+				in
+				    public_store
+
+	annotation PBI_ResultType = Table
+

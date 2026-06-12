@@ -1,0 +1,165 @@
+table 'AdventureWorks Customer Lookup'
+	lineageTag: 5ef1dd95-25fa-43ac-8b03-2ba86efe9d3c
+
+	column CustomerKey
+		dataType: string
+		lineageTag: 39c65e88-a858-4991-8dd2-27fcb6b0de9e
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Prefix
+		dataType: string
+		lineageTag: cd07f9aa-bc3a-4fea-85a6-7d114fa3ae57
+		summarizeBy: none
+		sourceColumn: Prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstName
+		dataType: string
+		lineageTag: 33daece3-1d6e-4f9e-9d47-17f0e1369733
+		summarizeBy: none
+		sourceColumn: FirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastName
+		dataType: string
+		lineageTag: 4ee8f79e-1e56-4ed6-ba66-5554032718f0
+		summarizeBy: none
+		sourceColumn: LastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BirthDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ccdd2680-79db-4bee-bc14-71e3e8641608
+		summarizeBy: none
+		sourceColumn: BirthDate
+
+		variation Variation
+			isDefault
+			relationship: cb7c8a5e-fb29-4f79-836a-ea608b17f0b6
+			defaultHierarchy: LocalDateTable_73310873-4e6a-4c34-8179-577e6a7ed9b6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MaritalStatus
+		dataType: string
+		lineageTag: be19771f-96a6-4513-8b67-039acb37c1e7
+		summarizeBy: none
+		sourceColumn: MaritalStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: d55135f6-84d5-4da3-9b5c-f258938fd3a1
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmailAddress
+		dataType: string
+		lineageTag: 72f11572-796d-450a-85fa-16648eafb5ae
+		summarizeBy: none
+		sourceColumn: EmailAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnnualIncome
+		dataType: int64
+		formatString: 0
+		lineageTag: 667b879e-34d4-41fb-abaf-7547af4c8eee
+		summarizeBy: sum
+		sourceColumn: AnnualIncome
+
+		annotation SummarizationSetBy = Automatic
+
+	column TotalChildren
+		dataType: string
+		lineageTag: e308fea1-1d43-499e-8440-ef176a8ab392
+		summarizeBy: none
+		sourceColumn: TotalChildren
+
+		annotation SummarizationSetBy = Automatic
+
+	column EducationLevel
+		dataType: string
+		lineageTag: b9e8d4cc-6dc0-4b19-9ebc-500bde7b060a
+		summarizeBy: none
+		sourceColumn: EducationLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Occupation
+		dataType: string
+		lineageTag: 21741612-2e9e-46a0-bd1b-02e39ee56d22
+		summarizeBy: none
+		sourceColumn: Occupation
+
+		annotation SummarizationSetBy = Automatic
+
+	column HomeOwner
+		dataType: string
+		lineageTag: 3dc8d857-0baf-4985-8793-6e6cb81325e3
+		summarizeBy: none
+		sourceColumn: HomeOwner
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Full Name' = 'AdventureWorks Customer Lookup'[FirstName] & " " & 'AdventureWorks Customer Lookup'[LastName]
+		dataType: string
+		lineageTag: b02dbadc-557a-4d81-8864-2ec4e4602209
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age = DATEDIFF('AdventureWorks Customer Lookup'[BirthDate], TODAY(), YEAR)
+		dataType: int64
+		lineageTag: a1060bf0-b0b7-4e7a-8d07-db83fb748e8f
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age Group' = IF('AdventureWorks Customer Lookup'[Age] < 30, "Under 30", IF('AdventureWorks Customer Lookup'[Age] < 40, "30-40", IF('AdventureWorks Customer Lookup'[Age] < 50, "40-50", "50+")))
+		dataType: string
+		lineageTag: 9a8527ab-78e3-4227-85bc-e040bc19ea04
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Income Level' = IF('AdventureWorks Customer Lookup'[AnnualIncome] < 40000, "Low", IF('AdventureWorks Customer Lookup'[AnnualIncome] < 80000, "Medium", "High"))
+		dataType: string
+		lineageTag: 9c41ba98-d57e-476a-8b49-85d82f33d6da
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'AdventureWorks Customer Lookup' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\oping\OneDrive\Desktop\Power BI Maven Analytics\AdventureWorks+Raw+Data\AdventureWorks Raw Data\AdventureWorks Customer Lookup.csv"),[Delimiter=",", Columns=13, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Promoted Headers", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Blank Rows", each true),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Filtered Rows",{{"CustomerKey", type text}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Changed Type1", each [CustomerKey] <> "11004"),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Filtered Rows1", {"CustomerKey"}),
+				    #"Filtered Rows2" = Table.SelectRows(#"Removed Errors", each [CustomerKey] <> "30---"),
+				    #"Filtered Rows3" = Table.SelectRows(#"Filtered Rows2", each not Text.Contains([CustomerKey], "30---")),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows3",{{"AnnualIncome", Int64.Type}, {"BirthDate", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

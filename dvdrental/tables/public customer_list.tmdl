@@ -1,0 +1,88 @@
+table 'public customer_list'
+	lineageTag: 378220a7-ace5-407b-ba3e-535c62f005dc
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: e3f12987-540e-4572-a21f-043d25da81bd
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: a215494f-42c2-4241-8faf-3cc977062484
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column address
+		dataType: string
+		lineageTag: b8243808-1d08-462e-8177-3ce7c28d58d6
+		summarizeBy: none
+		sourceColumn: address
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'zip code'
+		dataType: string
+		lineageTag: b7cdb964-293f-4aa8-97d9-36e3e26a260a
+		summarizeBy: none
+		sourceColumn: zip code
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone
+		dataType: string
+		lineageTag: 5430cb67-d3b0-4ec1-a27f-d14b4e63e71c
+		summarizeBy: none
+		sourceColumn: phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 51bbe104-e0fb-41ca-ad48-b739fb40e183
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 7255035a-1b24-459d-b546-ed8f3529b854
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column notes
+		dataType: string
+		lineageTag: e3b212e5-58ba-4189-9c07-fb8907d1bf81
+		summarizeBy: none
+		sourceColumn: notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column sid
+		dataType: int64
+		formatString: 0
+		lineageTag: 4ea89766-b3c0-47e6-867f-309c0bedbbe1
+		summarizeBy: sum
+		sourceColumn: sid
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public customer_list' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_customer_list = Source{[Schema="public",Item="customer_list"]}[Data]
+				in
+				    public_customer_list
+
+	annotation PBI_ResultType = Table
+

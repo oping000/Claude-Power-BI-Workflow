@@ -1,0 +1,45 @@
+table 'public language'
+	lineageTag: 8dadf412-580b-4f0e-aaf3-b33b78e95a06
+
+	column language_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b748da74-0c0f-492b-ba9c-bf8e0067a725
+		summarizeBy: none
+		sourceColumn: language_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: cc51ee00-c584-4a67-beb6-a8697b7a9256
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 72f2bac1-07a3-46df-b57f-6e101e8569e9
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: ee795cb3-d404-4ee6-abc0-325c3fcfe8ba
+			defaultHierarchy: LocalDateTable_2f6df89e-0ca8-47bd-8eac-c0c494f6731c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public language' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_language = Source{[Schema="public",Item="language"]}[Data]
+				in
+				    public_language
+
+	annotation PBI_ResultType = Table
+

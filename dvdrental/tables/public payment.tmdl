@@ -1,0 +1,97 @@
+table 'public payment'
+	lineageTag: 62349d31-b17b-4e2b-a4d9-ecd685762d00
+
+	measure 'Total Revenue' = SUM('public payment'[amount])
+		formatString: $#,##0.00
+		displayFolder: Revenue
+		lineageTag: 8a32f90b-acec-4fcf-b14b-ed615fec61f9
+
+	measure 'Avg Transaction Value' = AVERAGE('public payment'[amount])
+		formatString: $#,##0.00
+		displayFolder: Revenue
+		lineageTag: e30fcf36-7da8-48c6-8152-e60c18a0fc23
+
+	measure 'Total Transactions' = COUNTROWS('public payment')
+		formatString: #,##0
+		displayFolder: Revenue
+		lineageTag: 4d76cb6c-915b-4d50-b330-ebcce51efead
+
+	measure 'Revenue MoM %' =
+			VAR CurrentMonth = [Total Revenue]
+			VAR PrevMonth = CALCULATE([Total Revenue], DATEADD('public payment'[payment_date], -1, MONTH))
+			RETURN DIVIDE(CurrentMonth - PrevMonth, PrevMonth, 0)
+		formatString: 0.0%
+		displayFolder: Revenue
+		lineageTag: 782532b3-dea0-49b4-80a0-dad7848cdba3
+
+	column payment_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 30145532-e24f-45e9-bb24-18d915c24c3f
+		summarizeBy: sum
+		sourceColumn: payment_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 857653ac-2c51-4979-a59e-b633b885f863
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column staff_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f2d28684-2ae8-4948-addf-0675128c5c02
+		summarizeBy: none
+		sourceColumn: staff_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column rental_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8371f5d0-bb6c-4118-9677-549989349de0
+		summarizeBy: sum
+		sourceColumn: rental_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount
+		dataType: double
+		lineageTag: 56d9ba07-a34a-4809-86bf-5b1a365fc4ec
+		summarizeBy: sum
+		sourceColumn: amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column payment_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f568ed7f-ba3c-4b7a-b584-0f2925a629f3
+		summarizeBy: none
+		sourceColumn: payment_date
+
+		variation Variation
+			isDefault
+			relationship: 3622e78e-3bd3-4b11-8df0-3000955c1899
+			defaultHierarchy: LocalDateTable_a3930467-cf23-4dcc-b8b7-11670245d184.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public payment' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_payment = Source{[Schema="public",Item="payment"]}[Data]
+				in
+				    public_payment
+
+	annotation PBI_ResultType = Table
+

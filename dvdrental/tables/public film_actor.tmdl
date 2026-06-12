@@ -1,0 +1,46 @@
+table 'public film_actor'
+	lineageTag: 1f793f04-1ea9-4315-8545-deaa51e1edf4
+
+	column actor_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d1ef3194-0e60-4605-b82b-5cd70a764a08
+		summarizeBy: none
+		sourceColumn: actor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column film_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 56365e02-74b0-4171-be44-6a74263e6f5d
+		summarizeBy: none
+		sourceColumn: film_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_update
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8e2e6b56-fd8e-4516-9907-0bc37efd944e
+		summarizeBy: none
+		sourceColumn: last_update
+
+		variation Variation
+			isDefault
+			relationship: be6b3601-49f2-410e-a897-2dfabf72fb6c
+			defaultHierarchy: LocalDateTable_e54ac623-eef8-4409-b505-5810a04964b9.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public film_actor' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dvdrental"),
+				    public_film_actor = Source{[Schema="public",Item="film_actor"]}[Data]
+				in
+				    public_film_actor
+
+	annotation PBI_ResultType = Table
+

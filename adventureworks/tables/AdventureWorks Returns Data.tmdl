@@ -1,0 +1,70 @@
+table 'AdventureWorks Returns Data'
+	lineageTag: da2af356-a967-415c-a31a-d9b5f3dfe00c
+
+	measure 'Total Returns' = SUM('AdventureWorks Returns Data'[ReturnQuantity])
+		formatString: #,##0
+		displayFolder: Returns
+		lineageTag: 638db462-7690-4af8-a7a6-408a62d3fb62
+
+	measure 'Return Rate %' = DIVIDE([Total Returns], [Total Quantity], 0)
+		formatString: 0.0%
+		displayFolder: Returns
+		lineageTag: 4c61d63f-0418-4a30-a096-204d1c97f23d
+
+	column ReturnDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 188d4d0e-8f1a-435c-bb71-a8016d324e2b
+		summarizeBy: none
+		sourceColumn: ReturnDate
+
+		variation Variation
+			isDefault
+			relationship: ad93da7c-43bc-4708-9ac3-9772a37f7952
+			defaultHierarchy: LocalDateTable_1f1b4f2e-1d33-49e5-a0c7-a7b4f7c12731.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TerritoryKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 1bc1c075-8447-4db5-9549-f2c038f6bb36
+		summarizeBy: count
+		sourceColumn: TerritoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: b7b8ee6c-c0db-4e2c-ab0e-1c293f24f923
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReturnQuantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 60990aec-8ec8-470b-ba45-9afbe60afafa
+		summarizeBy: sum
+		sourceColumn: ReturnQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'AdventureWorks Returns Data' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\oping\OneDrive\Desktop\Power BI Maven Analytics\AdventureWorks+Raw+Data\AdventureWorks Raw Data\AdventureWorks Returns Data.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ReturnDate", type date}, {"TerritoryKey", Int64.Type}, {"ProductKey", Int64.Type}, {"ReturnQuantity", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
